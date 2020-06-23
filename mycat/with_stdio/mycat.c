@@ -35,7 +35,7 @@ int main(int argc, char **argv)
             FILE *fp = fopen(argv[i], "r");
             if (!fp)
             {
-                perror("cat_file: could not open file");
+                perror("main: could not open file");
                 exit(EXIT_FAILURE);
             }
 
