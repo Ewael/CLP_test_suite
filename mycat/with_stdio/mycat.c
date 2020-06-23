@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "mycat.h"
+
 #define BUFFER_SIZE 4096
 #define STDIN 0
 #define STDOUT 1
