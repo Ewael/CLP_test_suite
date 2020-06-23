@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 
 #include "mycat.h"
 
-/*
- * read file and write it in stdout
- */
 void cat(FILE *fp)
 {
     char buffer[CAT_BUFFER_SIZE] = { 0 };
