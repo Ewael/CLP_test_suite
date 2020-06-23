@@ -1,14 +1,14 @@
 #ifndef MYCAT_H
 #define MYCAT_H
 
-/*
- * read stdin and write it back in stdout
+/**
+ * block size for writing / reading
  */
-void cat_stdin(void);
+#define CAT_BUFFER_SIZE 4096
 
-/*
+/**
  * read file and write it in stdout
  */
-void cat_file(void);
+void cat(FILE *fp);
 
 #endif
