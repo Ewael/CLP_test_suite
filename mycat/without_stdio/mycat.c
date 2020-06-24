@@ -17,13 +17,13 @@ void cat(int fdin)
         {
             if (write(CAT_STDOUT, buffer, r) != r)
             {
-                errx(EXIT_FAILURE, "cat: could not write buf to stdout");
+                err(EXIT_FAILURE, "cat: could not write buf to stdout");
             }
         }
 
         if (r == -1)
         {
-            errx(EXIT_FAILURE, "cat: could not read fdin");
+            err(EXIT_FAILURE, "cat: could not read fdin");
         }
 
         else
@@ -51,9 +51,9 @@ int main(int argc, char **argv)
         for (int i = 1; i < argc; i++)
         {
             int fp = open(argv[i], O_RDONLY);
-            if (!fp)
+            if (fp == -1)
             {
-                errx(EXIT_FAILURE, "main: could not open file");
+                err(EXIT_FAILURE, "main: could not open file");
             }
 
             cat(fp);
