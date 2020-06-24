@@ -6,28 +6,62 @@
 
 #include "mycat.h"
 
-void cat(int fdin)
+int read_to_buffer(int fdin, char *buffer, size_t len)
 {
-    char buffer[CAT_BUFFER_SIZE] = { 0 };
     int r;
-
-    while (1)
+    char *tmp = buffer; // reset at start of buffer
+    do
     {
-        while ((r = read(fdin, buffer, CAT_BUFFER_SIZE)) > 0)
-        {
-            if (write(CAT_STDOUT, buffer, r) != r)
-            {
-                err(EXIT_FAILURE, "cat: could not write buf to stdout");
-            }
-        }
-
+        r = read(fdin, tmp, len);
         if (r == -1)
         {
             err(EXIT_FAILURE, "cat: could not read fdin");
         }
 
-        else
+        if (!r)
+        {
+            return 1;
+        }
+
+        len -= r;
+        tmp += r;
+    } while (len > 0);
+
+    return 0;
+}
+
+void write_buffer(char *buffer, size_t len)
+{
+    int w;
+    char *tmp = buffer; // reset at start of buffer
+    do
+    {
+        w = write(CAT_STDOUT, tmp, len);
+        if (w == -1)
+        {
+             err(EXIT_FAILURE, "cat: could not write in stdout");
+        }
+
+        if (!w)
+        {
             break;
+        }
+
+        len -= w;
+        tmp += w;
+    } while (len > 0);
+}
+
+void cat(int fdin)
+{
+    char buffer[CAT_BUFFER_SIZE] = { 0 };
+    int len = CAT_BUFFER_SIZE;
+
+    while (1)
+    {
+        if (read_to_buffer(fdin, buffer, len));
+            break;
+        write_buffer(buffer, len);
     }
 }
 

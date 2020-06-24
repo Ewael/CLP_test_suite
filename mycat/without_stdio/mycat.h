@@ -11,7 +11,7 @@
 /**
  * block size for writing / reading
  */
-#define CAT_BUFFER_SIZE 4096
+#define CAT_BUFFER_SIZE 8
 
 /**
  * read from given fd and write it in stdout
