@@ -2,11 +2,6 @@
 #define MYCAT_H
 
 /**
- * block size for writing / reading
- */
-#define CAT_BUFFER_SIZE 4096
-
-/**
  * define fd for visibility
  */
 #define CAT_STDIN 0
