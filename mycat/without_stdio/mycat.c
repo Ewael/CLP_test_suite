@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -54,14 +56,16 @@ void write_buffer(char *buffer, size_t len)
 
 void cat(int fdin)
 {
-    char buffer[CAT_BUFFER_SIZE] = { 0 };
     int len = CAT_BUFFER_SIZE;
+    int status;
 
     while (1)
     {
-        if (read_to_buffer(fdin, buffer, len));
-            break;
+        char buffer[CAT_BUFFER_SIZE] = { 0 };
+        status = read_to_buffer(fdin, buffer, len);
         write_buffer(buffer, len);
+        if (status)
+            break;
     }
 }
 
