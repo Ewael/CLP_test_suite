@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -11,10 +9,10 @@
 int read_to_buffer(int fdin, char *buffer, size_t len)
 {
     int r;
-    char *tmp = buffer; // reset at start of buffer
+    char *rptr = buffer; // read ptr to move in buffer
     do
     {
-        r = read(fdin, tmp, len);
+        r = read(fdin, rptr, len);
         if (r == -1)
         {
             err(EXIT_FAILURE, "cat: could not read fdin");
@@ -26,7 +24,7 @@ int read_to_buffer(int fdin, char *buffer, size_t len)
         }
 
         len -= r;
-        tmp += r;
+        rptr += r;
     } while (len > 0);
 
     return 0;
@@ -35,10 +33,10 @@ int read_to_buffer(int fdin, char *buffer, size_t len)
 void write_buffer(char *buffer, size_t len)
 {
     int w;
-    char *tmp = buffer; // reset at start of buffer
+    char *wptr = buffer; // write ptr to move in buffer
     do
     {
-        w = write(CAT_STDOUT, tmp, len);
+        w = write(CAT_STDOUT, wptr, len);
         if (w == -1)
         {
              err(EXIT_FAILURE, "cat: could not write in stdout");
@@ -50,22 +48,48 @@ void write_buffer(char *buffer, size_t len)
         }
 
         len -= w;
-        tmp += w;
+        wptr += w;
     } while (len > 0);
 }
 
-void cat(int fdin)
+void read_and_write_stdin(int fdin, char *buffer, size_t len)
 {
-    int len = CAT_BUFFER_SIZE;
-    int status;
+    int r;
+    char *rptr = buffer; // read ptr to move in buffer
+    do
+    {
+        r = read(fdin, rptr, len);
+        if (r == -1)
+        {
+            err(EXIT_FAILURE, "cat: could not read fdin");
+        }
 
+        write_buffer(rptr, r);
+
+        len -= r;
+        rptr += r;
+    } while (len > 0);
+}
+
+void cat_file(int fdin)
+{
+    int status;
     while (1)
     {
         char buffer[CAT_BUFFER_SIZE] = { 0 };
-        status = read_to_buffer(fdin, buffer, len);
-        write_buffer(buffer, len);
+        status = read_to_buffer(fdin, buffer, CAT_BUFFER_SIZE);
+        write_buffer(buffer, CAT_BUFFER_SIZE);
         if (status)
             break;
+    }
+}
+
+void cat_stdin(int fdin)
+{
+    while (1)
+    {
+        char buffer[CAT_BUFFER_SIZE] = { 0 };
+        read_and_write_stdin(fdin, buffer, CAT_BUFFER_SIZE);
     }
 }
 
@@ -74,7 +98,7 @@ int main(int argc, char **argv)
     // read from stdin
     if (argc == 1)
     {
-        cat(CAT_STDIN);
+        cat_stdin(CAT_STDIN);
     }
 
     // usage if -h or --help
@@ -94,7 +118,7 @@ int main(int argc, char **argv)
                 err(EXIT_FAILURE, "main: could not open file");
             }
 
-            cat(fp);
+            cat_file(fp);
 
             close(fp);
         }
