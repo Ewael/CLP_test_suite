@@ -19,7 +19,6 @@ protected:
     }
 };
 
-/*
 TEST_F(TestLexer, correctness)
 {
     FILE* in = fmap_string("greet ; exit ;");
@@ -101,7 +100,6 @@ TEST_F(TestLexer, correct_semi)
 
     ASSERT_EQ(lx_pop(lexer).type, TOK_SEMICOLON);
 }
-*/
 
 int main(int argc, char **argv)
 {
