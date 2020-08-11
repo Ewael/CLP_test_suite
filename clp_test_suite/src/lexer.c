@@ -53,14 +53,20 @@ struct token word_to_tok(char *word)
     else if (!strncmp(word, "exit", len))
         tok.type = TOK_EXIT;
     else if (!strncmp(word, "print", len))
+    {
         tok.type = TOK_PRINT;
+        tok.arg = NULL;
+    }
     else if (!strncmp(word, "add", len))
+    {
         tok.type = TOK_ADD;
+        tok.arg = NULL;
+    }
     else
     {
         tok.type = TOK_STRING;
         char *str = malloc(sizeof(char)*len);
-        *str = *word;
+        strncpy(str, word, len);
         tok.arg = str;
     }
 
