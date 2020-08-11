@@ -6,10 +6,10 @@ extern "C" {
 
 #define BASE_TOKEN(Name, Type) static struct token Name = { .type = Type, .arg = NULL }
 
-BASE_TOKEN(greet, TOK_GREET);
-BASE_TOKEN(error, TOK_ERROR);
-BASE_TOKEN(semicolon, TOK_SEMICOLON);
-BASE_TOKEN(integer, TOK_INTEGER);
+//BASE_TOKEN(greet, TOK_GREET);
+//BASE_TOKEN(error, TOK_ERROR);
+//BASE_TOKEN(semicolon, TOK_SEMICOLON);
+//BASE_TOKEN(integer, TOK_INTEGER);
 
 #define ASSERT_TOKEQ(Lhs, Rhs)         \
     do {                               \
@@ -36,7 +36,7 @@ TEST_F(TvTesting, default_values)
     ASSERT_EQ(vec->capacity, TV_DEFAULT_CAPACITY);
     ASSERT_EQ(vec->size, 0);
 }
-
+/*
 TEST_F(TvTesting, pop_empty)
 {
     ASSERT_TOKEQ(tv_pop_front(vec), error);
@@ -91,7 +91,7 @@ TEST_F(TvTesting, push_int)
 
     free(buff);
 }
-
+*/
 int main(int argc, char **argv)
 {
     testing::InitGoogleTest(&argc, argv);

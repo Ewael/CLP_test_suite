@@ -10,7 +10,6 @@ struct tok_vec *tv_init()
 
 void tv_destroy(struct tok_vec *vec)
 {
-    free(vec->data);
     free(vec);
 }
 
