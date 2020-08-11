@@ -21,6 +21,13 @@ enum token_type tv_peek(struct tok_vec *vec)
 
 struct token tv_pop_front(struct tok_vec *vec)
 {
+    if (vec->size == 0)
+    {
+        struct token tok;
+        tok.type = TOK_ERROR;
+        return tok;
+    }
+
     struct token tok = vec->data[0];
     for (size_t i = 0; i < vec->size-1; i++)
     {
