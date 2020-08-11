@@ -39,8 +39,9 @@ struct token word_to_tok(char *word)
     if (is_number(word))
     {
         tok.type = TOK_INTEGER;
-        int x = atoi(word);
-        tok.arg = &x;
+        int *x = malloc(sizeof(int));
+        *x = atoi(word);
+        tok.arg = x;
         return tok;
     }
 
@@ -58,7 +59,9 @@ struct token word_to_tok(char *word)
     else
     {
         tok.type = TOK_STRING;
-        tok.arg = word;
+        char *str = malloc(sizeof(char)*len);
+        *str = *word;
+        tok.arg = str;
     }
 
     return tok;
