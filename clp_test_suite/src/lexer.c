@@ -45,15 +45,15 @@ struct token word_to_tok(char *word)
     }
 
     int len = strlen(word);
-    if (strncmp(word, ";", len))
+    if (!strncmp(word, ";", len))
         tok.type = TOK_SEMICOLON;
-    else if (strncmp(word, "greet", len))
+    else if (!strncmp(word, "greet", len))
         tok.type = TOK_GREET;
-    else if (strncmp(word, "exit", len))
+    else if (!strncmp(word, "exit", len))
         tok.type = TOK_EXIT;
-    else if (strncmp(word, "print", len))
+    else if (!strncmp(word, "print", len))
         tok.type = TOK_PRINT;
-    else if (strncmp(word, "add", len))
+    else if (!strncmp(word, "add", len))
         tok.type = TOK_ADD;
     else
     {
