@@ -33,6 +33,6 @@ struct token tv_pop_front(struct tok_vec *vec)
 
 int tv_push_back(struct tok_vec *vec, struct token token)
 {
-    int error;
+    int error=0;
     return error;
 }
