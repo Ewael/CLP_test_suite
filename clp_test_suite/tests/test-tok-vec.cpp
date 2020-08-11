@@ -6,7 +6,7 @@ extern "C" {
 
 #define BASE_TOKEN(Name, Type) static struct token Name = { .type = Type, .arg = NULL }
 
-//BASE_TOKEN(greet, TOK_GREET);
+BASE_TOKEN(greet, TOK_GREET);
 BASE_TOKEN(error, TOK_ERROR);
 //BASE_TOKEN(semicolon, TOK_SEMICOLON);
 //BASE_TOKEN(integer, TOK_INTEGER);
@@ -41,7 +41,7 @@ TEST_F(TvTesting, pop_empty)
 {
     ASSERT_TOKEQ(tv_pop_front(vec), error);
 }
-/*
+
 TEST_F(TvTesting, pop_correct)
 {
     ASSERT_EQ(tv_push_back(vec, greet), 1);
@@ -49,6 +49,7 @@ TEST_F(TvTesting, pop_correct)
     ASSERT_TOKEQ(tv_pop_front(vec), error);
 }
 
+/*
 TEST_F(TvTesting, peek_correct)
 {
     ASSERT_EQ(tv_push_back(vec, greet), 1);
