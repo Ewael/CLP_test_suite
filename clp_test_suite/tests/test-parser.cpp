@@ -27,7 +27,6 @@ protected:
     }
 };
 
-/*
 TEST_F(TestParser, correct)
 {
     pr_fill_lexer("greet ; exit ; ");
@@ -35,6 +34,7 @@ TEST_F(TestParser, correct)
     ASSERT_EQ(pr_parse(parser), 1);
 }
 
+/*
 TEST_F(TestParser, invalid_print)
 {
     pr_fill_lexer("print \"str1\" \"str2\"");
@@ -66,8 +66,7 @@ TEST_F(TestParser, cmd_then_token)
 
 int main(int argc, char **argv)
 {
-    //testing::InitGoogleTest(&argc, argv);
+    testing::InitGoogleTest(&argc, argv);
 
-    //return RUN_ALL_TESTS();
-    return 0;
+    return RUN_ALL_TESTS();
 }
