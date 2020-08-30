@@ -65,9 +65,8 @@ struct token word_to_tok(char *word)
     else
     {
         tok.type = TOK_STRING;
-        char *str = malloc(sizeof(char)*len);
-        strncpy(str, word, len);
-        tok.arg = &str;
+        tok.arg = malloc(sizeof(char)*len);
+        strncpy(tok.arg, word, len);
     }
 
     return tok;

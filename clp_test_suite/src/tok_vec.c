@@ -11,6 +11,13 @@ struct tok_vec *tv_init()
 
 void tv_destroy(struct tok_vec *vec)
 {
+    for (size_t i = 0; i < vec->size; i++)
+    {
+        if (vec->data[i].type == TOK_STRING)
+        {
+            free(vec->data[i].arg);
+        }
+    }
     free(vec->data);
     free(vec);
 }
