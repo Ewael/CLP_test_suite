@@ -41,7 +41,6 @@ TEST_F(TestParser, invalid_print)
     ASSERT_EQ(pr_parse(parser), 0);
 }
 
-/*
 TEST_F(TestParser, add_not_enough_args)
 {
     pr_fill_lexer("add 12");
@@ -62,7 +61,6 @@ TEST_F(TestParser, cmd_then_token)
 
     ASSERT_EQ(pr_parse(parser), 0);
 }
-*/
 
 int main(int argc, char **argv)
 {

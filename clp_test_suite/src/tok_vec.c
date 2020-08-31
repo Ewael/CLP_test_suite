@@ -13,7 +13,8 @@ void tv_destroy(struct tok_vec *vec)
 {
     for (size_t i = 0; i < vec->size; i++)
     {
-        if (vec->data[i].type == TOK_STRING)
+        if (vec->data[i].type == TOK_STRING ||
+            vec->data[i].type == TOK_INTEGER)
         {
             free(vec->data[i].arg);
         }
