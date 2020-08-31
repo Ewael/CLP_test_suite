@@ -2,7 +2,13 @@
 
 struct parser *pr_init(struct lexer *lx)
 {
+    // allocate space for struct
     struct parser *pr = malloc(sizeof(struct parser));
+    if (pr == NULL)
+    {
+        errx(EXIT_FAILURE, "pr_init: could not malloc pr");
+    }
+
     pr->lexer = lx;
     return pr;
 }
@@ -19,6 +25,7 @@ int pr_parse(struct parser *pr)
     int i = 0;
     int size = pr->lexer->tokens->size;
 
+    // iterate on the data array and check token type
     while (i < pr->lexer->tokens->size)
     {
         // if ';' then iterate on next token
@@ -83,9 +90,7 @@ int pr_parse(struct parser *pr)
 
         // should be an impossible case
         else
-        {
             return 0;
-        }
     }
 
     return 1;
