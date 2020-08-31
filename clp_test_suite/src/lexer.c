@@ -8,8 +8,16 @@
 
 struct lexer *lx_init()
 {
+    // allocate space for struct
     struct lexer *lx = malloc(sizeof(struct lexer));
+    if (lx == NULL)
+    {
+        errx(EXIT_FAILURE, "lx_init: could not malloc lx");
+    }
+
+    // init tokens struct
     lx->tokens = tv_init();
+
     return lx;
 }
 
@@ -19,6 +27,7 @@ void lx_destroy(struct lexer *lx)
     free(lx);
 }
 
+// return 1 if string is a number, 0 otherwise
 int is_number(char *string)
 {
     int len = strlen(string);
@@ -36,10 +45,15 @@ struct token word_to_tok(char *word)
 {
     struct token tok;
 
+    // if number then set arg with the int
     if (is_number(word))
     {
         tok.type = TOK_INTEGER;
         int *x = malloc(sizeof(int));
+        if (x == NULL)
+        {
+             errx(EXIT_FAILURE, "word_to_tok: could not malloc x");
+        }
         *x = atoi(word);
         tok.arg = x;
         return tok;
@@ -64,8 +78,13 @@ struct token word_to_tok(char *word)
     }
     else
     {
+        // if string then set arg with the string
         tok.type = TOK_STRING;
         tok.arg = malloc(sizeof(char)*len);
+        if (tok.arg == NULL)
+        {
+             errx(EXIT_FAILURE, "work_to_tok: could not malloc tok.arg");
+        }
         strncpy(tok.arg, word, len);
     }
 
@@ -77,16 +96,20 @@ int lx_fill(struct lexer *lx, FILE *input)
     char buf[BUFSIZE];
     char *word;
     int err = 0;
+
+    // read input and write it to buf
     while (fgets(buf, BUFSIZE, input) != NULL)
     {
         word = strtok(buf, " ");
         while (word != NULL)
         {
+            // get token and insert it to lexer
             struct token tok = word_to_tok(word);
             err = tv_push_back(lx->tokens, tok);
             word = strtok(NULL, " ");
         }
     }
+
     return err;
 }
 
