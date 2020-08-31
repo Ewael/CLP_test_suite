@@ -1,6 +1,8 @@
 #ifndef TOKENS_H
 #define TOKENS_H
 
+#include <err.h>
+
 /**
  * @brief The different types in our syntax
  */
