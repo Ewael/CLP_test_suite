@@ -10,10 +10,8 @@ struct lexer *lx_init()
 {
     // allocate space for struct
     struct lexer *lx = malloc(sizeof(struct lexer));
-    if (lx == NULL)
-    {
+    if (!lx)
         errx(EXIT_FAILURE, "lx_init: could not malloc lx");
-    }
 
     // init tokens struct
     lx->tokens = tv_init();
@@ -23,21 +21,27 @@ struct lexer *lx_init()
 
 void lx_destroy(struct lexer *lx)
 {
+    // FIXME: Si je passe lx = NULL a cette fonction, ca SEGV :P
+    // lx_destroy(NULL) doit fonctionner correctement.
+    // Mais tu dereference NULL a la ligne 28
+
     tv_destroy(lx->tokens);
     free(lx);
 }
 
+// Tres bien pour du "vieux" C et du C EPITA, mais oublie pas qu'il y a `stdbool.h`
+// et que tu peux retourner true et false
+
 // return 1 if string is a number, 0 otherwise
 int is_number(char *string)
 {
+    // Aussi il me semble que strlen(NULL) crash donc il faut checker ca :P
+
     int len = strlen(string);
     for (int i = 0; i < len; i++)
-    {
         if (!isdigit(string[i]))
-        {
             return 0;
-        }
-    }
+
     return 1;
 }
 
@@ -50,15 +54,16 @@ struct token word_to_tok(char *word)
     {
         tok.type = TOK_INTEGER;
         int *x = malloc(sizeof(int));
-        if (x == NULL)
-        {
+        if (!x)
              errx(EXIT_FAILURE, "word_to_tok: could not malloc x");
-        }
+
         *x = atoi(word);
         tok.arg = x;
         return tok;
     }
 
+    // Tu calcules deux fois strlen(word), c'est pas grave mais tu peux le stocker
+    // et le passer comme parametre a is_number() pour avoir plus de perf
     int len = strlen(word);
     if (!strncmp(word, ";", len))
         tok.type = TOK_SEMICOLON;
@@ -81,12 +86,15 @@ struct token word_to_tok(char *word)
         // if string then set arg with the string
         tok.type = TOK_STRING;
         tok.arg = malloc(sizeof(char)*len);
-        if (tok.arg == NULL)
-        {
+        if (!tok.arg == NULL)
              errx(EXIT_FAILURE, "work_to_tok: could not malloc tok.arg");
-        }
+
         strncpy(tok.arg, word, len);
     }
+
+    // Dans ton if/else tu fais beaucoup de fois la meme chose. Je te conseille
+    // de faire une fonction pour initialier un token, comme ca tu evite d'avoir
+    // de la memoire non initializee (tok.arg) et ca t'evite des erreurs
 
     return tok;
 }
@@ -108,7 +116,7 @@ int lx_fill(struct lexer *lx, FILE *input)
             err = tv_push_back(lx->tokens, tok);
             word = strtok(NULL, " ");
         }
-    }
+    } // Tres bien. C'est tres chaud d'utiliser strtok donc GG
 
     return err;
 }

@@ -4,10 +4,8 @@ struct parser *pr_init(struct lexer *lx)
 {
     // allocate space for struct
     struct parser *pr = malloc(sizeof(struct parser));
-    if (pr == NULL)
-    {
+    if (!pr)
         errx(EXIT_FAILURE, "pr_init: could not malloc pr");
-    }
 
     pr->lexer = lx;
     return pr;
@@ -15,6 +13,7 @@ struct parser *pr_init(struct lexer *lx)
 
 void pr_destroy(struct parser *pr)
 {
+    // Pareil que dans lexer.c, ca peut SEGV ici. Il faut checker pour NULL
     lx_destroy(pr->lexer);
     free(pr);
 }
@@ -28,10 +27,13 @@ int pr_parse(struct parser *pr)
     // iterate on the data array and check token type
     while (i < pr->lexer->tokens->size)
     {
+        // FIXME: Ca fait baucoup de if else. Fait plutot une switch case avec du
+        // fallthrough
+
         // if ';' then iterate on next token
         if (data[i].type == TOK_SEMICOLON)
         {
-            i ++;
+            i++;
             continue;
         }
 
@@ -48,23 +50,23 @@ int pr_parse(struct parser *pr)
         {
             if (i != size-1)
             {
-                if (data[i+1].type != TOK_SEMICOLON)
+                if (data[i + 1].type != TOK_SEMICOLON)
                 {
                     return 0;
                     }
             }
-            i ++;
+            i++;
             continue;
         }
 
         // if print then error if nothing behind
         else if (data[i].type == TOK_PRINT)
         {
-            if (i == size-1)
+            if (i == size - 1)
             {
                 return 0;
             }
-            else if (data[i+1].type != TOK_STRING)
+            else if (data[i + 1].type != TOK_STRING)
             {
                 return 0;
             }
@@ -75,12 +77,12 @@ int pr_parse(struct parser *pr)
         // if add then error if not 2 elements behind
         else if (data[i].type == TOK_ADD)
         {
-            if (i >= size-2)
+            if (i >= size - 2)
             {
                 return 0;
             }
-            else if (data[i+1].type != TOK_INTEGER ||
-                     data[i+2].type != TOK_INTEGER)
+            else if (data[i + 1].type != TOK_INTEGER ||
+                     data[i + 2].type != TOK_INTEGER)
             {
                 return 0;
             }
