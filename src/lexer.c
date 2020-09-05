@@ -28,9 +28,8 @@ void lx_destroy(struct lexer *lx)
 }
 
 // return 1 if string is a number, 0 otherwise
-int is_number(char *string)
+int is_number(char *string, int len)
 {
-    int len = strlen(string);
     for (int i = 0; i < len; i++)
     {
         if (!isdigit(string[i]))
@@ -44,9 +43,10 @@ int is_number(char *string)
 struct token word_to_tok(char *word)
 {
     struct token tok;
+    int len = strlen(word);
 
     // if number then set arg with the int
-    if (is_number(word))
+    if (is_number(word, len))
     {
         tok.type = TOK_INTEGER;
         int *x = malloc(sizeof(int));
@@ -59,7 +59,6 @@ struct token word_to_tok(char *word)
         return tok;
     }
 
-    int len = strlen(word);
     if (!strncmp(word, ";", len))
         tok.type = TOK_SEMICOLON;
     else if (!strncmp(word, "greet", len))
