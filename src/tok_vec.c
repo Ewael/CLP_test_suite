@@ -14,7 +14,7 @@ struct tok_vec *tv_init()
     tv->size = 0;
 
     // allocate space for tokens array
-    tv->data = malloc(sizeof(tv->capacity)*sizeof(struct token));
+    tv->data = malloc(tv->capacity * sizeof(struct token));
     if (tv->data == NULL)
     {
         errx(EXIT_FAILURE, "tv_init: could not malloc tv->data");
@@ -40,8 +40,7 @@ void tv_destroy(struct tok_vec *vec)
 
 enum token_type tv_peek(struct tok_vec *vec)
 {
-    enum token_type tt = vec->data[0].type;
-    return tt;
+    return vec->data[0].type;
 }
 
 struct token tv_pop_front(struct tok_vec *vec)
@@ -49,9 +48,11 @@ struct token tv_pop_front(struct tok_vec *vec)
     // error if empty array
     if (vec->size == 0)
     {
-        struct token tok;
-        tok.type = TOK_ERROR;
-        tok.arg = NULL;
+        struct token tok =
+        {
+            .type = TOK_ERROR,
+            .arg = NULL,
+        };
         return tok;
     }
 
@@ -61,7 +62,7 @@ struct token tv_pop_front(struct tok_vec *vec)
     {
         vec->data[i] = vec->data[i+1];
     }
-    vec->size --;
+    vec->size--;
 
     return tok;
 }
@@ -69,7 +70,7 @@ struct token tv_pop_front(struct tok_vec *vec)
 int double_capacity(struct tok_vec *vec)
 {
     // double allocated memory space
-    vec->data = realloc(vec->data, (vec->capacity*2)*sizeof(struct token));
+    vec->data = realloc(vec->data, (vec->capacity*2) * sizeof(struct token));
     if (vec->data == NULL)
     {
         return 0;
